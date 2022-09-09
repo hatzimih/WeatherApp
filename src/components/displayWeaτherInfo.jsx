@@ -241,7 +241,7 @@ const WeatherInfo = (props) => {
               <h3>Weather forecast for {daily8.length} days</h3>
             </Item>
             {daily8.map((f) => (
-              <Stack direction="row" id={index++}>
+              <Stack direction="row" key={index++}>
                 <HtmlTooltip
                   title={
                     <React.Fragment>

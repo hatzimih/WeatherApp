@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import httpService from "../services/httpService";
 import WeatherInfo from "./displayWeaτherInfo";
+import Autocomplete from "react-google-autocomplete";
 
 const SelectPlace = () => {
   const [currentWeather, setCurrentWeather] = useState("");
@@ -34,7 +35,7 @@ const SelectPlace = () => {
 
   return (
     <React.Fragment>
-      <LoadScript
+      {/* <LoadScript
         googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}
         libraries={["places"]}
       >
@@ -49,7 +50,27 @@ const SelectPlace = () => {
             placeholder="Select a place "
           />
         </StandaloneSearchBox>
-      </LoadScript>
+      </LoadScript> */}
+      <Autocomplete
+        apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+        style={{ width: "90%" }}
+        onPlaceSelected={async (place, inputRef, autocomplete) => {
+          setSelectedPlace(place.formatted_address);
+          const weatherData = await getCurrentWeatherData(
+            place.geometry.location.lat(),
+            place.geometry.location.lng()
+          );
+          setCurrentWeather(JSON.stringify(weatherData));
+        }}
+        options={
+          {
+            //types: ["(regions)"],
+            // componentRestrictions: { country: "ru" },
+          }
+        }
+        //defaultValue="Amsterdam"
+      />
+      ;
       <WeatherInfo currentWeather={currentWeather} place={selectPlace} />
     </React.Fragment>
   );
